@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vernier caliper · Volume and density of a rectangular block</title>
+<meta name="description" content="Vernier caliper practical: measure the length, breadth and height of a rectangular block, then find its volume and density. Aim, theory, method, worked example, MCQs and an immersive practical.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23e9eff1'/%3E%3Crect x='3' y='8' width='26' height='6' rx='1.5' fill='%2318212b'/%3E%3Cpath d='M6 14v13l4-3V14z' fill='%2318212b'/%3E%3Cpath d='M17 6h7v12h-3v9l-4-3z' fill='%232a4fd6'/%3E%3Crect x='20' y='15' width='2' height='3' fill='%23b5d334'/%3E%3C/svg%3E">
+<link rel="preload" href="fonts/SchibstedGrotesk-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/PlusJakartaSans-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/fonts.css">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<canvas id="bg" aria-hidden="true"></canvas>
+
+<div id="cursor" aria-hidden="true">
+  <svg viewBox="-14 -26 40 40" width="40" height="40"><rect class="cu-beam" x="-11" y="-22" width="34" height="6" rx="1.4"/><g class="cu-ticks"><line x1="-6" y1="-22" x2="-6" y2="-19.5"/><line x1="-2" y1="-22" x2="-2" y2="-20.2"/><line x1="2" y1="-22" x2="2" y2="-19.5"/><line x1="6" y1="-22" x2="6" y2="-20.2"/><line x1="10" y1="-22" x2="10" y2="-19.5"/><line x1="14" y1="-22" x2="14" y2="-20.2"/><line x1="18" y1="-22" x2="18" y2="-19.5"/></g><path class="cu-fixed" d="M-10 -16 H-2.2 V-1.2 L-4.6 1 Q-9 -6 -10 -16Z"/><g id="cu-slide"><path class="cu-slider" d="M2.2 -24 H12 V-14 H2.2Z"/><path class="cu-jaw" d="M2.2 -16 H10 Q9 -6 4.6 1 L2.2 -1.2Z"/></g><circle class="cu-dot" cx="0" cy="0" r="1.1"/></svg>
+</div>
+
+<div class="app">
+  <aside class="rail" aria-label="Lesson progress">
+    <div class="rail-brand">
+      <div class="rail-eyebrow">Physics practical</div>
+      <div class="rail-title">Vernier caliper</div>
+      <div class="rail-sub">length, breadth, height · volume · density</div>
+    </div>
+    <div class="rail-body">
+      <div class="rail-beam" aria-hidden="true"><div class="rail-fill" id="rail-fill"></div><div class="rail-slider" id="rail-slider"><i></i><i></i><i></i><i></i><i></i></div></div>
+      <nav class="rail-nav" id="rail-nav" aria-label="Sections"></nav>
+    </div>
+  </aside>
+
+  <main class="stage" id="stage">
+    <div class="stage-top">
+      <button type="button" class="btn-prev" id="btn-prev">← Prev</button>
+    </div>
+
+    <!-- ============ AIM & OUTCOMES ============ -->
+    <section class="view" id="view-aim" data-title="Aim &amp; outcomes">
+      <div class="sheet">
+        <p class="disclaimer">This lesson is an AI-assisted introduction, not scientific-grade material. It is meant to build a working picture before the lecture and the lab session; the lab manual and the instructor take priority where they differ.</p>
+        <p class="eyebrow">Physics practical · Vernier caliper</p>
+        <h1 class="page-h">Volume and density of a rectangular block</h1>
+        <figure class="aim-figure">
+          <svg id="aim-hero" viewBox="0 0 860 400" role="img" aria-label="A vernier caliper closing on a rectangular block between its outside jaws"></svg>
+        </figure>
+        <div class="aim-block">
+          <div class="aim-label">Aim</div>
+          <p class="aim-text">To measure the length, breadth and height of the given rectangular object, and hence find its volume and density.</p>
+        </div>
+        <h2 class="sub-h">Learning outcomes</h2>
+        <p class="lede">By the end of this session, students should be able to:</p>
+        <ul class="outcomes">
+          <li>Use a vernier caliper to measure the dimensions of solid objects and determine their volume and density.</li>
+          <li>Represent data with accuracy.</li>
+        </ul>
+        <h2 class="sub-h">Why it matters in medicine</h2>
+        <div class="med-row">
+          <div class="med"><svg viewBox="0 0 80 80" aria-hidden="true" class="med-ic" id="med-ic-1"></svg><div><h3>Tools, implants and prosthetics</h3><p>Surgical instruments, bone screws, plates and prosthetic parts are checked against their stated sizes with calipers.</p></div></div>
+          <div class="med"><svg viewBox="0 0 80 80" aria-hidden="true" class="med-ic" id="med-ic-2"></svg><div><h3>Bone and tissue thickness</h3><p>In research, the thickness of bones and tissue samples is measured to a tenth of a millimetre.</p></div></div>
+          <div class="med"><svg viewBox="0 0 80 80" aria-hidden="true" class="med-ic" id="med-ic-3"></svg><div><h3>Orthopaedics</h3><p>Orthopaedic teams use calipers for precise measurements of bones, joints and the implants that replace them.</p></div></div>
+        </div>
+        <div class="page-end"><button type="button" class="btn-next" data-next>Next →</button></div>
+      </div>
+    </section>
+
+    <!-- ============ THEORY ============ -->
+    <section class="view" id="view-theory" data-title="Theory">
+      <div class="sheet">
+        <h1 class="page-h">Theory</h1>
+        <p class="lede">A <strong>vernier caliper</strong> has two scales. The <strong>main scale</strong> on the beam is marked in millimetres. A short <strong>vernier scale</strong> on the sliding jaw splits one millimetre into ten equal steps, so lengths can be read to 0.1 mm, which is 0.01 cm.</p>
+
+        <h2 class="sub-h">The parts</h2>
+        <div class="parts-wrap"><svg id="parts-svg" viewBox="0 0 1000 470" role="img" aria-label="Labelled vernier caliper: beam with main scale, sliding jaw with vernier scale, outside jaws, inside jaws, depth rod, locking screw and thumb wheel"></svg></div>
+        <div class="terms">
+          <div class="term"><div class="term-k">Outside jaws</div><p>The large lower jaws grip an object from outside: lengths, breadths, heights and diameters.</p></div>
+          <div class="term"><div class="term-k">Inside jaws</div><p>The small upper jaws open outwards inside a hole or a slot to measure its width.</p></div>
+          <div class="term"><div class="term-k">Depth rod</div><p>A thin rod that slides out of the end of the beam to measure the depth of a hole or a step.</p></div>
+          <div class="term"><div class="term-k">Lock and wheel</div><p>The thumb wheel moves the sliding jaw finely; the locking screw holds it still for reading.</p></div>
+        </div>
+
+        <h2 class="sub-h">Least count</h2>
+        <div class="msd-wrap"><svg id="msd-svg" viewBox="0 0 1000 300" role="img" aria-label="Ten vernier divisions span nine main scale divisions"></svg></div>
+        <div class="lc-card">
+          <div class="lc-row"><span class="lc-k">1 MSD</span><span class="lc-v">= 1 mm = <b>0.1 cm</b></span></div>
+          <div class="lc-row"><span class="lc-k">10 VSD</span><span class="lc-v">= 9 MSD, so 1 VSD = 0.9 mm = <b>0.09 cm</b></span></div>
+          <div class="lc-eq">L.C = 1 MSD − 1 VSD = 0.1 − 0.09 = <b>0.01 cm</b></div>
+          <div class="lc-eq dim">or  L.C = <span class="frac"><span>1 MSD</span><span>number of vernier divisions</span></span> = <span class="frac"><span>0.1 cm</span><span>10</span></span> = <b>0.01 cm</b></div>
+          <p>Each vernier division is 0.01 cm shorter than a main scale division. That small difference is what the vernier measures.</p>
+        </div>
+
+        <h2 class="sub-h">Reading the two scales</h2>
+        <div class="read-grid">
+          <div class="rd"><div class="rd-k">MSR · main scale reading</div><p>The main scale mark <strong>just before the vernier zero</strong>, in cm. If the zero sits between 6.2 and 6.3, the MSR is 6.2 cm.</p></div>
+          <div class="rd"><div class="rd-k">VSR · vernier scale reading</div><p>The number of the vernier mark that <strong>lines up best</strong> with any main scale mark, counted in <strong>divisions</strong> (0 to 10). Multiply by L.C to change it to cm.</p></div>
+        </div>
+        <div class="eq-hero">Total reading = MSR + (VSR × L.C)</div>
+
+        <div class="reader">
+          <div class="reader-view"><svg id="read-svg" viewBox="0 0 1000 300" role="img" aria-label="Close-up of the main scale and the vernier scale"></svg></div>
+          <div class="reader-side">
+            <div class="ctl">
+              <label for="read-sl"><span>Jaw opening</span></label>
+              <input type="range" id="read-sl" min="0" max="15" step="0.01" value="2.47">
+            </div>
+            <div class="step-btns" role="group" aria-label="Move the sliding jaw">
+              <button type="button" class="btn-quiet sm" data-move="-0.1">− 1 mm</button>
+              <button type="button" class="btn-quiet sm" data-move="-0.01">− 0.01 cm</button>
+              <button type="button" class="btn-quiet sm" data-move="0.01">+ 0.01 cm</button>
+              <button type="button" class="btn-quiet sm" data-move="0.1">+ 1 mm</button>
+            </div>
+            <div class="read-out" id="read-out" aria-live="polite"></div>
+            <div class="read-actions">
+              <button type="button" class="btn-main" id="read-quiz">Try a reading</button>
+              <button type="button" class="btn-quiet" id="read-show">Show the answer</button>
+            </div>
+          </div>
+        </div>
+        <p class="note">Moving the jaw by 0.01 cm shifts the coinciding vernier mark along by one division.</p>
+
+        <h2 class="sub-h">Zero error</h2>
+        <p class="lede">With the jaws closed and nothing between them, the vernier zero should line up with the main scale zero. If it does, the zero error is <strong>nil</strong>. If not, the closed reading is the zero error, and it is removed from every reading.</p>
+        <div class="zero-row">
+          <figure class="zero-card"><svg id="zero-a" viewBox="0 0 1000 300" role="img" aria-label="Zero error nil"></svg><figcaption><b>Nil</b><span>Vernier 0 on main 0.</span></figcaption></figure>
+          <figure class="zero-card"><svg id="zero-b" viewBox="0 0 1000 300" role="img" aria-label="Positive zero error"></svg><figcaption><b>Positive, + 0.03 cm</b><span>Vernier 0 is to the right of main 0; mark 3 coincides.</span></figcaption></figure>
+          <figure class="zero-card"><svg id="zero-c" viewBox="0 0 1000 300" role="img" aria-label="Negative zero error"></svg><figcaption><b>Negative, − 0.04 cm</b><span>Vernier 0 is to the left; mark 6 coincides, so −(10 − 6) × 0.01.</span></figcaption></figure>
+        </div>
+        <p class="eq-note">corrected reading = observed reading − zero error</p>
+        <p class="note">For example, with a zero error of + 0.03 cm, an observed 4.56 cm becomes 4.53 cm; with − 0.04 cm it becomes 4.60 cm.</p>
+
+        <div class="two-notes">
+          <div class="side-note"><div class="sn-k">Gentle contact</div><p>The jaws should just touch the faces of the block. Squeezing hard tilts the sliding jaw and can dent soft materials, so the reading is no longer the true size.</p></div>
+          <div class="side-note"><div class="sn-k">Read square-on</div><p>Look straight down at the scales. Viewing at an angle (parallax) makes a different pair of marks seem to line up.</p></div>
+        </div>
+
+        <h2 class="sub-h">From dimensions to density</h2>
+        <div class="vd-row">
+          <div class="vd"><div class="vd-eq">V = l × b × h</div><p>Volume of a rectangular block, in cm³, from the length, breadth and height in cm.</p></div>
+          <div class="vd"><div class="vd-eq">ρ = <span class="frac"><span>m</span><span>V</span></span></div><p>Density: mass in g over volume in cm³, giving g/cm³.</p></div>
+        </div>
+        <div class="page-end"><button type="button" class="btn-next" data-next>Next →</button></div>
+      </div>
+    </section>
+
+    <!-- ============ METHOD ============ -->
+    <section class="view" id="view-method" data-title="Method">
+      <div class="sheet wide">
+        <h1 class="page-h">Method</h1>
+        <h2 class="sub-h first">Apparatus</h2>
+        <div class="app-grid" id="app-grid"></div>
+
+        <h2 class="sub-h">Steps</h2>
+        <div class="method-wrap">
+          <ol class="steps" id="steps">
+            <li><button type="button" class="step" aria-pressed="true"><span class="sn">1</span><span>Find the least count: L.C = 1 MSD − 1 VSD = 0.1 cm − 0.09 cm = 0.01 cm.</span></button></li>
+            <li><button type="button" class="step"><span class="sn">2</span><span>Close the sliding jaw onto the fixed jaw and check the zero. With no zero error, record "zero error nil".</span></button></li>
+            <li><button type="button" class="step"><span class="sn">3</span><span>Open the jaws and place the block between the outside jaws, then close the sliding jaw gently onto it.</span></button></li>
+            <li><button type="button" class="step"><span class="sn">4</span><span>Record the main scale reading (MSR) just before the zero of the vernier scale.</span></button></li>
+            <li><button type="button" class="step"><span class="sn">5</span><span>Note the vernier division that coincides with a main scale division: this is the VSR.</span></button></li>
+            <li><button type="button" class="step"><span class="sn">6</span><span>Total reading = MSR + (VSR × L.C), then apply the zero correction.</span></button></li>
+            <li><button type="button" class="step"><span class="sn">7</span><span>Repeat steps 3 to 6 for the length, the breadth and the height of the block.</span></button></li>
+            <li><button type="button" class="step"><span class="sn">8</span><span>Measure the mass of the block on the balance.</span></button></li>
+            <li><button type="button" class="step"><span class="sn">9</span><span>Calculate the volume V = l × b × h and the density ρ = m ÷ V.</span></button></li>
+          </ol>
+          <div class="step-view">
+            <div class="step-fig" id="step-fig"></div>
+            <p class="step-cap" id="step-cap"></p>
+          </div>
+        </div>
+
+        <aside class="tips">
+          <div class="tips-label">Good practice</div>
+          <ul>
+            <li><strong>Square to the jaws.</strong> Hold the block flat against the fixed jaw, so the measured edge is parallel to the beam.</li>
+            <li><strong>Light contact.</strong> Close with the thumb wheel until the jaw just touches; do not squeeze.</li>
+            <li><strong>Lock before reading.</strong> The locking screw stops the jaw moving while the scales are read.</li>
+            <li><strong>Read square-on.</strong> Look straight at the vernier to avoid parallax.</li>
+            <li><strong>MSR in cm, VSR in divisions.</strong> Only VSR is multiplied by the least count.</li>
+          </ul>
+        </aside>
+        <div class="page-end"><button type="button" class="btn-next" data-next>Next →</button></div>
+      </div>
+    </section>
+
+    <!-- ============ FORMULA & RESULTS ============ -->
+    <section class="view" id="view-results" data-title="Formula &amp; results">
+      <div class="sheet">
+        <h1 class="page-h">Formula &amp; results</h1>
+        <div class="formula-pair">
+          <div class="formula-card"><div class="big-eq">V = l b h</div><p>volume of the block, cm³</p></div>
+          <div class="formula-card"><div class="big-eq">ρ = <span class="frac"><span>m</span><span>V</span></span></div><p>density, g/cm³</p></div>
+        </div>
+
+        <h2 class="sub-h">Worked example</h2>
+        <p class="lede">Example readings for an aluminium block, with zero error nil.</p>
+        <div class="block-fig"><svg id="ex-block" viewBox="0 70 700 230" role="img" aria-label="The example block with its length, breadth and height marked"></svg></div>
+        <div class="obs-head"><span>Observation</span><span>L.C = 0.01 cm</span></div>
+        <div class="table-wrap">
+          <table class="obs hand" id="res-table">
+            <thead><tr><th>Dimension</th><th>MSR<span class="u">cm</span></th><th>VSR<span class="u">div</span></th><th>VSR × L.C<span class="u">cm</span></th><th>Total reading = MSR + (VSR × L.C)<span class="u">cm</span></th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+
+        <h2 class="sub-h">Calculation</h2>
+        <div class="calc" id="ex-calc"></div>
+
+        <h2 class="sub-h">Common slips</h2>
+        <div class="slips">
+          <div class="slip"><h3>Multiplying the MSRs only</h3><p>6.2 × 3.5 × 2.1 = 45.57 cm³ leaves out every vernier part. Use the total readings.</p></div>
+          <div class="slip"><h3>Adding instead of multiplying</h3><p>6.24 + 3.52 + 2.18 = 11.94 is a length, not a volume. V = l × b × h.</p></div>
+          <div class="slip"><h3>VSR written as cm</h3><p>A VSR of 4 means 4 divisions = 0.04 cm. Adding 4 cm to the MSR would be far off.</p></div>
+          <div class="slip"><h3>Density upside down</h3><p>V ÷ m = 0.370 is volume per gram. Density is mass per volume: m ÷ V.</p></div>
+          <div class="slip"><h3>Wrong main scale mark</h3><p>The MSR is the mark just <em>before</em> the vernier zero, not the nearest one or the one after it.</p></div>
+          <div class="slip"><h3>Squeezing the jaws</h3><p>Pressing hard tilts the jaw and changes the reading. Close gently, lock, then read.</p></div>
+        </div>
+        <div class="page-end"><button type="button" class="btn-next" data-next>Next →</button></div>
+      </div>
+    </section>
+
+    <!-- ============ MCQs ============ -->
+    <section class="view" id="view-mcq" data-title="MCQs">
+      <div class="sheet">
+        <h1 class="page-h">Check understanding</h1>
+        <div class="mcq-bar">
+          <div class="mcq-score" id="mcq-score">0 correct</div>
+          <button type="button" class="btn-quiet" id="mcq-reset">Reset &amp; reshuffle</button>
+        </div>
+        <ol class="mcq-list" id="mcq-list"></ol>
+        <div class="page-end"><button type="button" class="btn-next" data-next>Next →</button></div>
+      </div>
+    </section>
+
+    <!-- ============ PRACTICAL ============ -->
+    <section class="view" id="view-practical" data-title="Practical">
+      <div class="sheet wide">
+        <h1 class="page-h">Practical</h1>
+        <div class="prac-intro">
+          <p class="lede">Check the zero, place a block between the outside jaws, close the sliding jaw and read the two scales. Record the length, breadth and height, weigh the block, then work out its volume and density.</p>
+          <button type="button" class="btn-tut" id="tut-start"><svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true"><path d="M6 4l10 6-10 6z" fill="currentColor"/></svg>Start tutorial</button>
+        </div>
+
+        <div class="rig-frame" id="rig-frame">
+          <svg id="rig" viewBox="0 0 1240 700" role="img" aria-label="A vernier caliper above a tray of four numbered blocks, and a digital balance"></svg>
+        </div>
+        <div class="rig-msg" id="rig-msg" aria-live="polite"></div>
+
+        <div class="prac-mid">
+          <div class="panel" id="mag-panel">
+            <div class="panel-head"><h2 class="panel-h">Magnifier</h2><span class="panel-tag">main scale above, vernier scale below</span></div>
+            <div class="mag-wrap"><svg id="mag" viewBox="0 0 1000 300" role="img" aria-label="Magnified view of the main scale and the vernier scale"></svg></div>
+          </div>
+          <div class="panel" id="ctl-panel">
+            <h2 class="panel-h">Controls</h2>
+            <p class="ctl-help"><b>Sliding jaw:</b> drag it, turn the thumb wheel (drag or scroll over it), or select the jaw and use the arrow keys (Shift for 1 mm).</p>
+            <div class="seg" role="radiogroup" aria-label="Dimension to measure" id="dim-seg">
+              <button type="button" role="radio" aria-checked="true" data-dim="l">Length</button>
+              <button type="button" role="radio" aria-checked="false" data-dim="b">Breadth</button>
+              <button type="button" role="radio" aria-checked="false" data-dim="h">Height</button>
+            </div>
+            <div class="ctl-btns fine" role="group" aria-label="Fine moves">
+              <button type="button" class="btn-quiet sm" data-nudge="-0.1">◂ 1 mm</button>
+              <button type="button" class="btn-quiet sm" data-nudge="-0.01">◂ 0.01</button>
+              <button type="button" class="btn-quiet sm" data-nudge="0.01">0.01 ▸</button>
+              <button type="button" class="btn-quiet sm" data-nudge="0.1">1 mm ▸</button>
+            </div>
+            <div class="ctl-btns">
+              <button type="button" class="toggle" id="c-lock" aria-pressed="false"><span class="tg-track" aria-hidden="true"><span class="tg-knob"></span></span>Lock</button>
+              <button type="button" class="btn-quiet" id="c-zero">Check zero</button>
+            </div>
+            <div class="zero-stat" id="zero-stat">Zero error: <b>not checked</b></div>
+          </div>
+        </div>
+
+        <div class="prac-lower">
+          <div class="panel" id="tbl-panel">
+            <div class="panel-head">
+              <h2 class="panel-h">Observation</h2>
+              <span class="panel-tag mono">L.C = 0.01 cm</span>
+            </div>
+            <div class="rec-row" id="rec-row">
+              <div class="rf rf-dim"><span class="rf-k">Dimension</span><span class="rf-dimv" id="rec-dim">Length (l)</span></div>
+              <div class="rf"><label for="in-msr">MSR <span class="u">cm</span></label><input type="text" inputmode="decimal" id="in-msr" autocomplete="off"></div>
+              <div class="rf"><label for="in-vsr">VSR <span class="u">div</span></label><input type="text" inputmode="numeric" id="in-vsr" autocomplete="off"></div>
+              <button type="button" class="btn-main" id="btn-rec">Record</button>
+            </div>
+            <p class="rec-msg" id="rec-msg" aria-live="polite"></p>
+            <div class="tut-formula" id="tut-formula" hidden></div>
+            <div class="table-wrap">
+              <table class="obs small" id="p-table">
+                <thead><tr><th>Dimension</th><th>MSR<span class="u">cm</span></th><th>VSR<span class="u">div</span></th><th>VSR × L.C<span class="u">cm</span></th><th>Total = MSR + (VSR × L.C)<span class="u">cm</span></th></tr></thead>
+                <tbody id="p-tbody"></tbody>
+              </table>
+            </div>
+            <p class="tbl-note" id="tbl-note"></p>
+          </div>
+
+          <div class="panel" id="calc-panel">
+            <h2 class="panel-h">Calculation</h2>
+            <div class="calc-rows">
+              <div class="cr-dims" id="cr-dims">
+                <div class="cr-dim"><span>l</span><b id="fx-l">—</b><i>cm</i></div>
+                <div class="cr-dim"><span>b</span><b id="fx-b">—</b><i>cm</i></div>
+                <div class="cr-dim"><span>h</span><b id="fx-h">—</b><i>cm</i></div>
+              </div>
+              <div class="cr" id="cr-v"><label for="in-v">Volume V = l × b × h <span class="u">cm³</span></label><input type="text" inputmode="decimal" id="in-v" autocomplete="off"><div class="cr-work" id="w-v"></div></div>
+              <div class="cr" id="cr-m"><label for="in-m">Mass m <span class="u">g</span></label><input type="text" inputmode="decimal" id="in-m" autocomplete="off"><div class="cr-sub">from the balance</div><div class="cr-work" id="w-m"></div></div>
+              <div class="cr" id="cr-rho"><label for="in-rho">Density ρ = m ÷ V <span class="u">g/cm³</span></label><input type="text" inputmode="decimal" id="in-rho" autocomplete="off"><div class="cr-work" id="w-rho"></div></div>
+            </div>
+            <div class="calc-actions">
+              <button type="button" class="btn-main" id="btn-check">Check</button>
+            </div>
+            <div class="check-msg" id="check-msg" aria-live="polite"></div>
+          </div>
+        </div>
+
+        <div class="prac-foot">
+          <button type="button" class="btn-quiet" id="btn-reset">Start over</button>
+        </div>
+
+        <div class="extras" id="extras">
+          <div class="extras-panel" id="extras-panel" role="region" aria-label="Optional extras">
+            <a href="https://grokipedia.com/page/Vernier_scale" target="_blank" rel="noopener">Grokipedia: Vernier scale</a>
+            <a href="https://grokipedia.com/page/Calipers" target="_blank" rel="noopener">Grokipedia: Calipers</a>
+            <a href="https://www.youtube.com/watch?v=FNdkYIVJ3Vc" target="_blank" rel="noopener">Video: How to Use a Vernier Caliper (SMUPhysics)</a>
+          </div>
+          <button type="button" class="extras-toggle" id="extras-toggle" aria-expanded="false" aria-controls="extras-panel">Optional extras</button>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+<div class="tut-bar" id="tut-bar" hidden role="status" aria-live="polite">
+  <div class="tut-main"><div class="tut-title" id="tut-title"></div><div class="tut-text" id="tut-text"></div><div class="tut-f" id="tut-f"></div></div>
+  <div class="tut-ctl"><button type="button" class="tut-btn" id="tut-skip">Skip step</button><button type="button" class="tut-btn stop" id="tut-stop">Stop</button></div>
+</div>
+<script src="js/app.js"></script>
+</body>
+</html>
