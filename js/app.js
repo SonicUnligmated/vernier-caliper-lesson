@@ -894,8 +894,9 @@
     /* ---------- moving blocks ---------- */
     function tween(b, to, ms, ease) {
       return new Promise(res => {
-        const from = { x: b.x, y: b.y, k: b.k, flip: b.flip }, t0 = tnow();
+        const from = { x: b.x, y: b.y, k: b.k, flip: b.flip }, t0 = tnow(), g0 = tut.gen;
         const f = () => {
+          if (g0 !== tut.gen) return res();
           let k = Math.min(1, (tnow() - t0) / ms); if (tut.on && tut.skip) k = 1;
           const e = ease ? ease(k) : (k < .5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2);
           for (const key in to) b[key] = from[key] + (to[key] - from[key]) * e;
@@ -935,7 +936,7 @@
       const tok = (weighDisplay.tok = (weighDisplay.tok || 0) + 1);
       const f = () => {
         if (tok !== weighDisplay.tok) return;
-        const k = Math.min(1, (tnow() - t0) / ms);
+        let k = Math.min(1, (tnow() - t0) / ms); if (tut.on && tut.skip) k = 1;
         const jit = k < 1 ? (Math.random() - .5) * .08 * (1 - k) : 0;
         st.shown = start + (target - start) * (1 - Math.pow(1 - k, 3)) + jit;
         BAL.disp.textContent = (Math.abs(st.shown) < .005 ? 0 : st.shown).toFixed(2);
@@ -1184,7 +1185,7 @@
       hiRing.setAttribute('x', box[0]); hiRing.setAttribute('y', box[1]); hiRing.setAttribute('width', box[2]); hiRing.setAttribute('height', box[3]);
       hiRing.setAttribute('opacity', 1);
     }
-    const tut = { on: false, cancel: false, skip: false };
+    const tut = { on: false, cancel: false, skip: false, idx: -1, ff: false, target: 0, restartTo: null, gen: 0, plan: null };
     const btnPause = $('tut-pause'), selSpeed = $('tut-speed');
     let pausedAnims = [];
     function setPaused(p) {
@@ -1206,9 +1207,9 @@
     });
     function tScroll(y) {
       return new Promise(res => {
-        const y0 = window.scrollY, t0 = tnow(), ms = Math.min(900, 250 + Math.abs(y - y0) * .5);
+        const y0 = window.scrollY, t0 = tnow(), ms = Math.min(900, 250 + Math.abs(y - y0) * .5), g0 = tut.gen;
         (function f() {
-          if (tut.cancel) return res();
+          if (tut.cancel || g0 !== tut.gen) return res();
           let k = Math.min(1, (tnow() - t0) / ms); if (tut.skip) k = 1;
           const e = k < .5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
           window.scrollTo({ top: y0 + (y - y0) * e, behavior: 'instant' });
@@ -1224,7 +1225,7 @@
         (function w() { if (tut.cancel) return rej(STOP); if (tut.skip || tnow() - t0 >= ms) return res(); setTimeout(w, 25); })();
       });
     }
-    function step(title, text, f) { tut.skip = false; tTitle.textContent = title; tText.textContent = text; tF.textContent = f || ''; }
+    function step(title, text, f) { navStep(); tTitle.textContent = title; tText.textContent = text; tF.textContent = f || ''; }
     let hiEls = [];
     function hi(...els) { hiEls.forEach(e => e.classList.remove('tut-hi')); hiEls = els.filter(Boolean); hiEls.forEach(e => e.classList.add('tut-hi')); }
     async function scrollToEl(elm) {
@@ -1260,8 +1261,8 @@
         await sleep(16);
       }
     }
-    async function tutorial() {
-      tut.on = true; tut.cancel = false; document.body.classList.add('tut-on'); bar.hidden = false; btnTut.disabled = true;
+    async function tutorial(target) {
+      tut.on = true; tut.cancel = false; navBegin(target); document.body.classList.add('tut-on'); bar.hidden = false; btnTut.disabled = true;
       try {
         resetAll();
         const rig = $('rig-frame'), mag = $('mag-panel'), tbl = $('tbl-panel'), calc = $('calc-panel');
@@ -1345,15 +1346,68 @@
       } catch (e) {
         if (e !== STOP) throw e;
       } finally {
-        tut.on = false; tut.skip = false; resetPlayback(); hi(); hiSvg(null); MG.hi(null); tForm.hidden = true;
+        const again = tut.restartTo; tut.restartTo = null; tut.gen++; tut.ff = false; document.body.classList.remove('tut-ff');
+        tut.on = false; tut.skip = false; if (again == null) resetPlayback(); hi(); hiSvg(null); MG.hi(null); tForm.hidden = true;
         BLOCKS.forEach(bb => { if (bb.loc === 'anim') { bb.loc = 'tray'; bb.ori = 'l'; bb.k = TK; bb.flip = 1; Object.assign(bb, homePos(bb)); render(bb); } });
         freeState();
-        document.body.classList.remove('tut-on'); bar.hidden = true; btnTut.disabled = false;
+        if (again == null) { document.body.classList.remove('tut-on'); bar.hidden = true; btnTut.disabled = false; tut.plan = null; }
+        updNav();
+        if (again != null) setTimeout(() => tutorial(again), 0);
       }
     }
     btnTut.addEventListener('click', () => { if (!tut.on) tutorial(); });
-    $('tut-stop').addEventListener('click', () => { tut.cancel = true; });
-    $('tut-skip').addEventListener('click', () => { tut.skip = true; });
+    $('tut-stop').addEventListener('click', () => { tut.restartTo = null; tut.cancel = true; tut.gen++; });
+    /* ---------- step navigation: Previous re-runs the tutorial instantly up to the step before, Next finishes the current step ---------- */
+    const btnPrevS = document.getElementById('tut-prev'), btnNextS = document.getElementById('tut-next');
+    function updNav() { bar.dataset.step = tut.idx; if (btnPrevS) btnPrevS.disabled = !tut.on || (tut.restartTo != null ? tut.restartTo : tut.ff ? tut.target : tut.idx) <= 0; }
+    function freezeNew() {                    // keep animations created by a jump frozen while paused
+      const more = document.getAnimations().filter(a => a.playState === 'running');
+      more.forEach(a => a.pause()); pausedAnims.push(...more);
+    }
+    function navBegin(target) {
+      const prac = document.getElementById('view-practical');
+      if (target === undefined) {                // remember the status messages as they were when the run started
+        tut.live = Array.from(prac.querySelectorAll('[aria-live="polite"]')).filter(e => !bar.contains(e) && !e.querySelector('svg, canvas, input, button, select')).map(e => [e, e.innerHTML, e.className]);
+      } else if (tut.live) tut.live.forEach(([e, h, c]) => { e.innerHTML = h; e.className = c; });
+      if (target !== undefined) {                // short effects frozen by a pause belong to the cancelled run: let them end now
+        pausedAnims = pausedAnims.filter(a => {
+          let finite = false; try { finite = a.effect && a.effect.getComputedTiming().endTime !== Infinity; } catch (_) { /* ignore */ }
+          if (finite) { try { a.finish(); } catch (_) { /* ignore */ } }
+          return !finite;
+        });
+      }
+      tut.idx = -1; tut.target = target || 0; tut.ff = tut.target > 0; tut.skip = tut.ff; tut.restartTo = null;
+      document.body.classList.toggle('tut-ff', tut.ff); updNav();
+    }
+    function navStep() {
+      tut.idx++;
+      if (tut.ff && tut.idx >= tut.target) { tut.ff = false; document.body.classList.remove('tut-ff'); }
+      tut.skip = tut.ff;
+      if (TC.paused && !tut.ff) requestAnimationFrame(freezeNew);
+      updNav();
+    }
+    function navPrev() {
+      if (!tut.on && tut.restartTo == null) return;
+      if (tut.restartTo != null) tut.restartTo = Math.max(0, tut.restartTo - 1);
+      else if (tut.ff) tut.target = Math.max(0, tut.target - 1);
+      else { if (tut.idx <= 0) return; tut.restartTo = tut.idx - 1; tut.cancel = true; tut.gen++; }
+      updNav();
+    }
+    function navNext() {
+      if (!tut.on && tut.restartTo == null) return;
+      if (tut.restartTo != null) tut.restartTo++;
+      else if (tut.ff) tut.target++;
+      else tut.skip = true;
+      updNav();
+    }
+    if (btnPrevS) btnPrevS.addEventListener('click', navPrev);
+    if (btnNextS) btnNextS.addEventListener('click', navNext);
+    document.addEventListener('keydown', e => {
+      if (!tut.on || (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') || e.repeat || e.ctrlKey || e.metaKey || e.altKey || e.shiftKey) return;
+      const t = e.target;
+      if (t.closest && t.closest('select, textarea, [contenteditable], input[type="range"], [role="slider"], [role="spinbutton"], [tabindex]:not(button):not(a):not(input)')) return;   // instrument controls keep their arrow keys
+      e.preventDefault(); if (e.key === 'ArrowLeft') navPrev(); else navNext();
+    });
 
     apply(); updZero(); updSeg(); renderTable(); say(DEFAULT_MSG);
     window.__vc = { st, rows, BLOCKS, moveTo, setDim, setLock, record, check, resetAll, putInJaws, putOnPan, home, trueReading, MG, G, S, AX, get tableBlock() { return tableBlock; } };

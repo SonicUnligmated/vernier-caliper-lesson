@@ -22,7 +22,7 @@ Live site: https://sonicunligmated.github.io/vernier-caliper-lesson/
   - choice of length, breadth or height, with the block turning to present that dimension; the jaw stops at the block's face and warns when pressed too hard;
   - typed MSR and VSR readings validated with hints;
   - weighing on the balance with tare, then a checked calculation of V and ρ with hints for common slips;
-  - a guided tutorial with Skip step and Stop, and Start over.
+  - a guided tutorial with Pause/Resume, playback speed, Previous step / Next step (← → keys) and Stop, and Start over.
 
 ## Example values
 
